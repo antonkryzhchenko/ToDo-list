@@ -49,10 +49,10 @@ function createTask() {
 
         taskList.push(todo);
         setName();
-        render();
+        render(taskList);
     };
 
-function createTaskFrame() {
+function createTaskFrame(task) {
     let todoCardItem = createElement('div', 'todo-card__item');
     
     let todoCardItems = createElement('div', 'todo-card__items');
@@ -94,13 +94,15 @@ function createTaskFrame() {
     todoCard.append(todoCardItemBlock);
 
     todoCardTitleBtn1.addEventListener('click', () => todoCardItemBlock.innerHTML = '');
+    
+    return task;
 }
 
 app.append(todoCard);
 
-function render() {
+function render(array) {
     todoCardItemBlock.innerHTML = '';
-    taskList.forEach(() => {
-        todoCardItemBlock.append(createTaskFrame())
+    array.forEach((task) => {
+        todoCardItemBlock.append(createTaskFrame(task))
     });
 }
