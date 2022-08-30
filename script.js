@@ -72,7 +72,7 @@ function createTaskFrame(task) {
     todoCardItemsCheckbox.type = 'checkbox';
     
     let todoCardItemsText = createElement('div', 'todo-card__items-text');
-    todoCardItemsText.innerHTML = todoCardTitleInput.value;
+    todoCardItemsText.innerText = task.text;
     todoCardTitleInput.value = '';
     
     let todoCardItemsBtn = createElement('button', 'todo-card__items-btn', 'X');
@@ -83,7 +83,7 @@ function createTaskFrame(task) {
     let todoCardItemDate = createElement('div', 'todo-card__item-date');
     
     let todoCardItemText = createElement('p', 'todo-card__item-p');
-    todoCardItemText.innerHTML = `${getDate()}`;
+    todoCardItemText.innerText = task.date;
     
     todoCardItemDate.append(todoCardItemText);
     
@@ -95,7 +95,7 @@ function createTaskFrame(task) {
 
     todoCardTitleBtn1.addEventListener('click', () => todoCardItemBlock.innerHTML = '');
     
-    return task;
+    console.log(task);
 }
 
 app.append(todoCard);
