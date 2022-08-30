@@ -35,6 +35,13 @@ todoCardTitleInput.addEventListener('keydown', (e) => e.keyCode === 13 ? createT
 
 todoCardTitleBtn2.addEventListener('click', () => createTask());
 
+function deleteTask(taskDelete) {
+    let taskIndex = taskList.findIndex((el) => el.id === taskDelete.id);
+    taskList.splice(taskIndex, 1);
+    setName();
+    render(taskList);
+}
+
 function createTask() {
         if (!todoCardTitleInput.value) {
             return;
@@ -76,7 +83,7 @@ function createTaskFrame(task) {
     todoCardTitleInput.value = '';
     
     let todoCardItemsBtn = createElement('button', 'todo-card__items-btn', 'X');
-    todoCardItemsBtn.addEventListener('click', () => todoCardItem.remove());
+    todoCardItemsBtn.addEventListener('click', () => deleteTask(task));
     
     todoCardItems.append(todoCardItemsCheckbox, todoCardItemsText, todoCardItemsBtn);
     
