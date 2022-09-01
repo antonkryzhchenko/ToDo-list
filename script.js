@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
     render(taskList);
 });
 
-import {createElement} from './helpers.js';
+import { createElement } from './helpers.js';
 
-import {getDate} from './helpers.js';
+import { getDate } from './helpers.js';
 
 const todoCard = createElement('div', 'todo-card');
 const todoCardTitle = createElement('div', 'todo-card__title');
@@ -35,6 +35,12 @@ todoCardTitleInput.addEventListener('keydown', (e) => e.keyCode === 13 ? createT
 
 todoCardTitleBtn2.addEventListener('click', () => createTask());
 
+todoCardTitleBtn1.addEventListener('click', () => {
+    taskList.length = 0;
+    setName();
+    render(taskList);
+})
+
 function deleteTask(task) {
     let taskIndex = taskList.findIndex((el) => el.id === task.id);
     taskList.splice(taskIndex, 1);
@@ -42,45 +48,50 @@ function deleteTask(task) {
     render(taskList);
 }
 
+function checkTask(task) {
+    let el = taskList.find((item) => item.id === task.id);
+    el.isChecked = el.isChecked ? false : true;
+    setName();
+    render(taskList);
+}
+
 function createTask() {
-        if (!todoCardTitleInput.value) {
-            return;
-        }
+    if (!todoCardTitleInput.value) {
+        return;
+    }
 
-        const todo = {
-            id: Math.random(),
-            date: getDate(),
-            text: todoCardTitleInput.value,
-            isChecked: false,
-        };
-
-        taskList.push(todo);
-        setName();
-        render(taskList);
+    const todo = {
+        id: Math.random(),
+        date: getDate(),
+        text: todoCardTitleInput.value,
+        isChecked: false,
     };
+
+    taskList.push(todo);
+    setName();
+    render(taskList);
+};
 
 function createTaskFrame(task) {
     let todoCardItem = createElement('div', 'todo-card__item');
     
     let todoCardItems = createElement('div', 'todo-card__items');
-    todoCardItems.addEventListener('click', (e) => {
-        let target = e.target;
-        if (target.tagName === 'INPUT' && target.type === 'checkbox')
-            if (target.checked) {
-                todoCardItemsText.style.textDecoration = 'line-through';
-                todoCardItemsText.style.backgroundColor = 'rgb(197, 250, 197)';
-            } else {
-                todoCardItemsText.style.textDecoration = 'none';
-                todoCardItemsText.style.backgroundColor = 'rgb(250, 247, 197)';
-            }
-    })
-    
-    let todoCardItemsCheckbox = createElement('input', 'todo-card__items-checkbox');
-    todoCardItemsCheckbox.type = 'checkbox';
     
     let todoCardItemsText = createElement('div', 'todo-card__items-text');
     todoCardItemsText.innerText = task.text;
     todoCardTitleInput.value = '';
+
+    let todoCardItemsCheckbox = createElement('input', 'todo-card__items-checkbox');
+    todoCardItemsCheckbox.type = 'checkbox';
+    todoCardItemsCheckbox.addEventListener('click', () => checkTask(task));
+        if (task.isChecked) {
+            todoCardItemsCheckbox.checked = true;
+            todoCardItemsText.style.textDecoration = 'line-through';
+            todoCardItemsText.style.backgroundColor = 'rgb(197, 250, 197)';
+            } else {
+            todoCardItemsText.style.textDecoration = 'none';
+            todoCardItemsText.style.backgroundColor = 'rgb(250, 247, 197)';
+        }
     
     let todoCardItemsBtn = createElement('button', 'todo-card__items-btn', 'X');
     todoCardItemsBtn.addEventListener('click', () => deleteTask(task));
@@ -103,13 +114,13 @@ function createTaskFrame(task) {
     todoCardTitleBtn1.addEventListener('click', () => todoCardItemBlock.innerHTML = '');
 
     return todoCardItem;
-}
+};
 
 app.append(todoCard);
 
 function render(array) {
     todoCardItemBlock.innerHTML = '';
     array.forEach((task) => {
-        todoCardItemBlock.append(createTaskFrame(task))
+        todoCardItemBlock.append(createTaskFrame(task));
     });
-}
+};
